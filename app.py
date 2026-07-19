@@ -1,5 +1,6 @@
 import streamlit as st 
 from src.extract_text import extract_text_from_pdf, extract_text_from_docx
+from src.skills import compare_skills, calculate_score, extract_skills
 
 st.title("AI Resume & Interview Assistant")
 
@@ -27,3 +28,17 @@ job_description = st.text_area("Paste the job description here")
 
 if job_description:
     st.success("Job description received.")
+
+if uploaded_resume is not None and job_description:
+    matched_skills, missing_skills = compare_skills(resume_text, job_description)
+    job_skills = extract_skills(job_description)
+    score = calculate_score(matched_skills, job_skills)
+
+    st.header("Results")
+    st.metric("Match Score", str(score) + "%")
+
+    st.subheader("Skills you have that match the job")
+    st.write(matched_skills)
+
+    st.subheader("Skills the job wants that are missing from your resume")
+    st.write(missing_skills)
