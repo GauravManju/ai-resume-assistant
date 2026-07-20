@@ -1,6 +1,7 @@
 import streamlit as st 
 from src.extract_text import extract_text_from_pdf, extract_text_from_docx
-from src.skills import compare_skills, calculate_score, extract_skills
+from src.skills import compare_skills, calculate_score, extract_skills, calculate_final_score
+from src.semantic import calculate_semantic_similarity
 
 st.title("AI Resume & Interview Assistant")
 
@@ -32,10 +33,17 @@ if job_description:
 if uploaded_resume is not None and job_description:
     matched_skills, missing_skills = compare_skills(resume_text, job_description)
     job_skills = extract_skills(job_description)
-    score = calculate_score(matched_skills, job_skills)
+
+    skill_score = calculate_score(matched_skills, job_skills)
+    semantic_score = calculate_semantic_similarity(resume_text, job_description)
+    final_score = calculate_final_score(skill_score, semantic_score)
 
     st.header("Results")
-    st.metric("Match Score", str(score) + "%")
+    st.metric("Overall Match Score", str(final_score) + "%")
+
+    st.subheader("Score breakdown")
+    st.write("Skill match: " + str(skill_score) + "%")
+    st.write("Semantic (meaning) match: " + str(round(semantic_score * 100)) + "%")
 
     st.subheader("Skills you have that match the job")
     st.write(matched_skills)

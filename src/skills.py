@@ -67,3 +67,10 @@ def calculate_score(matched_skills, job_skills):
 
     score = len(matched_skills) / len(job_skills) * 100
     return round(score)
+
+def calculate_final_score(skill_score, semantic_score):
+    semantic_percentage = semantic_score * 100
+
+    final_score = (0.7 * skill_score) + (0.3 * semantic_percentage)
+
+    return round(final_score)
