@@ -4,6 +4,12 @@ from src.skills import compare_skills, calculate_score, extract_skills, calculat
 from src.semantic import calculate_semantic_similarity
 from src.llm import generate_resume_suggestions, generate_interview_questions
 
+st.set_page_config(
+    page_title="AI Resume & Interview Assistant",
+    page_icon="📄",
+    layout="wide",
+)
+
 st.title("AI Resume & Interview Assistant")
 
 st.write("Welcome! This app will help you match your resume to a job description.")
@@ -16,12 +22,14 @@ if uploaded_resume is not None:
     if file_name.endswith(".pdf"):
         resume_text = extract_text_from_pdf(uploaded_resume)
         st.success("Resume text extracted successfully!")
-        st.text_area("Extracted resume text", resume_text, height=300)
+        with st.expander("View extracted resume text"):
+            st.text_area("Extracted resume text", resume_text, height=300)
 
     elif file_name.endswith(".docx"):
         resume_text = extract_text_from_docx(uploaded_resume)
         st.success("Resume text extracted successfully!")
-        st.text_area("Extracted resume text", resume_text, height=300)
+        with st.expander("View extracted resume text"):
+            st.text_area("Extracted resume text", resume_text, height=300)
 
     else:
         st.error("Unsupported file type. Please upload a PDF or DOCX file.")
@@ -45,6 +53,14 @@ if uploaded_resume is not None and job_description:
     
     with tab1:
         st.metric("Overall Match Score", str(final_score) + "%")
+        st.progress(final_score / 100)
+
+        if final_score >= 70:
+            st.success("Strong match - your resume aligns well with this job.")
+        elif final_score >= 40:
+            st.warning("Moderate match - there's room to improve your alignment.")
+        else:
+            st.error("Weak match - consider whether this role fits your current profile.")
 
         st.subheader("Score breakdown")
         st.write("Skill match: " + str(skill_score) + "%")
@@ -93,8 +109,8 @@ INTERVIEW QUESTIONS TO PREPARE FOR
 """
 
     st.download_button(
-            label="Download full report",
-            data=report,
-            file_name="resume_analysis_report.txt",
-            mime="text/plain",
-        )
+        label="Download full report",
+        data=report,
+        file_name="resume_analysis_report.txt",
+        mime="text/plain",
+    )
