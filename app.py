@@ -62,7 +62,7 @@ if uploaded_resume is not None and job_description:
     with tab2:
         st.subheader("AI-powered resume suggestion")
         with st.spinner("Generating suggestion..."):
-            suggestions = generate_resume_suggestions(resume_text,job_description,missing_skills)
+            suggestions = generate_resume_suggestions(resume_text, job_description, missing_skills)
         st.write(suggestions)
 
     with tab3:
@@ -70,4 +70,31 @@ if uploaded_resume is not None and job_description:
         with st.spinner("Generating interview questions..."):
             questions = generate_interview_questions(resume_text, job_description, missing_skills)
         st.write(questions)
-    
+
+    report = f"""AI RESUME & INTERVIEW ASSISTANT - ANALYSIS REPORT
+
+OVERALL MATCH SCORE: {final_score}%
+
+SCORE BREAKDOWN
+Skill match: {skill_score}%
+Semantic (meaning) match: {round(semantic_score * 100)}%
+
+SKILLS YOU HAVE THAT MATCH THE JOB
+{", ".join(sorted(matched_skills))}
+
+SKILLS MISSING FROM YOUR RESUME
+{", ".join(sorted(missing_skills))}
+
+RESUME SUGGESTIONS
+{suggestions}
+
+INTERVIEW QUESTIONS TO PREPARE FOR
+{questions}
+"""
+
+    st.download_button(
+            label="Download full report",
+            data=report,
+            file_name="resume_analysis_report.txt",
+            mime="text/plain",
+        )
