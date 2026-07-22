@@ -40,25 +40,34 @@ if uploaded_resume is not None and job_description:
     final_score = calculate_final_score(skill_score, semantic_score)
 
     st.header("Results")
-    st.metric("Overall Match Score", str(final_score) + "%")
 
-    st.subheader("Score breakdown")
-    st.write("Skill match: " + str(skill_score) + "%")
-    st.write("Semantic (meaning) match: " + str(round(semantic_score * 100)) + "%")
+    tab1, tab2, tab3 = st.tabs(["Match Analysis", "Resume Suggestions", "Interview Questions"])
+    
+    with tab1:
+        st.metric("Overall Match Score", str(final_score) + "%")
 
-    st.subheader("Skills you have that match the job")
-    st.write(matched_skills)
+        st.subheader("Score breakdown")
+        st.write("Skill match: " + str(skill_score) + "%")
+        st.write("Semantic (meaning) match: " + str(round(semantic_score * 100)) + "%")
 
-    st.subheader("Skills the job wants that are missing from your resume")
-    st.write(missing_skills)
+        st.subheader("Skills you have that match the job")
+        st.write(", ".join(sorted(matched_skills)))
 
-    st.subheader("AI-powered resume suggestion")
-    with st.spinner("Generating suggestion..."):
-        suggestions = generate_resume_suggestions(resume_text,job_description,missing_skills)
-    st.write(suggestions)
+        st.subheader("Skills the job wants that are missing from your resume")
+        if missing_skills:
+            st.write(", ".join(sorted(missing_skills)))
+        else:
+            st.write("None - your resume covers all the skills we detected in the job description.")
+    
+    with tab2:
+        st.subheader("AI-powered resume suggestion")
+        with st.spinner("Generating suggestion..."):
+            suggestions = generate_resume_suggestions(resume_text,job_description,missing_skills)
+        st.write(suggestions)
 
-    st.subheader("Interview questions to prepare for")
-    with st.spinner("Generating interview questions..."):
-        questions = generate_interview_questions(resume_text, job_description, missing_skills)
-    st.write(questions)
+    with tab3:
+        st.subheader("Interview questions to prepare for")
+        with st.spinner("Generating interview questions..."):
+            questions = generate_interview_questions(resume_text, job_description, missing_skills)
+        st.write(questions)
     
