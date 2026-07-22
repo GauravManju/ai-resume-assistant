@@ -40,3 +40,31 @@ Rules:
 - Format the output as a numbered list of suggestions."""
 
     return generate_text(prompt)
+
+def generate_interview_questions(resume_text, job_description, missing_skills):
+    missing_skills_text = ", ".join(missing_skills)
+
+    prompt = f"""You are an experienced technical interviewer and hiring manager.
+
+Here is the candidate's resume:
+{resume_text}
+
+Here is the job description they are applying for:
+{job_description}
+
+Skills the job requires that are NOT on the candidate's resume:
+{missing_skills_text}
+
+Generate 6 interview questions this candidate should prepare for. Include a mix of:
+- Technical questions based on the candidate's actual skills and projects
+- Behavioural questions
+- Situational or problem-solving questions
+
+Rules:
+- Never invent projects, skills, or work experience that are not in the resume.
+- For skills the job requires but the resume lacks, ask learning-oriented questions instead of assuming experience. For example: "This role uses Docker. What do you know about it, and how would you approach learning it?"
+- Every question must connect to either the resume or the job description.
+- Keep questions realistic - the kind a real hiring manager would actually ask.
+- Format as a numbered list. After each question, add a short italic note explaining what the interviewer is assessing."""
+
+    return generate_text(prompt)

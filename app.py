@@ -2,7 +2,7 @@ import streamlit as st
 from src.extract_text import extract_text_from_pdf, extract_text_from_docx
 from src.skills import compare_skills, calculate_score, extract_skills, calculate_final_score
 from src.semantic import calculate_semantic_similarity
-from src.llm import generate_resume_suggestions
+from src.llm import generate_resume_suggestions, generate_interview_questions
 
 st.title("AI Resume & Interview Assistant")
 
@@ -56,4 +56,9 @@ if uploaded_resume is not None and job_description:
     with st.spinner("Generating suggestion..."):
         suggestions = generate_resume_suggestions(resume_text,job_description,missing_skills)
     st.write(suggestions)
+
+    st.subheader("Interview questions to prepare for")
+    with st.spinner("Generating interview questions..."):
+        questions = generate_interview_questions(resume_text, job_description, missing_skills)
+    st.write(questions)
     
