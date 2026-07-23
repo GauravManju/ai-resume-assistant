@@ -83,10 +83,16 @@ if uploaded_resume is not None and job_description:
 
     with tab3:
         st.subheader("Interview questions to prepare for")
-        with st.spinner("Generating interview questions..."):
-            questions = generate_interview_questions(resume_text, job_description, missing_skills)
-        st.write(questions)
 
+        if st.button("Generate interview questions"):
+            with st.spinner("Generating interview questions..."):
+                questions = generate_interview_questions(resume_text, job_description, missing_skills)
+            st.session_state.questions = questions
+
+        if "questions" in st.session_state:
+            st.write(st.session_state.questions)
+
+    questions_for_report = st.session_state.get("questions", "Not generated - click the button in the Interview Questions tab.")
     report = f"""AI RESUME & INTERVIEW ASSISTANT - ANALYSIS REPORT
 
 OVERALL MATCH SCORE: {final_score}%
@@ -105,7 +111,7 @@ RESUME SUGGESTIONS
 {suggestions}
 
 INTERVIEW QUESTIONS TO PREPARE FOR
-{questions}
+{questions_for_report}
 """
 
     st.download_button(
