@@ -16,6 +16,22 @@ Upload your resume (PDF or DOCX) and paste a job description. The app then:
 - Generates **role-specific interview questions** with notes on what each one assesses
 - Lets you **download the full analysis** as a report
 
+## Screenshots
+
+## Screenshots
+
+**Match analysis — transparent score with breakdown and skill gaps**
+
+![Match analysis showing a 58% overall score, breakdown into skill and semantic match, matched skills, and missing skills](screenshots/results.png)
+
+**AI-generated resume suggestions, grounded in the actual resume**
+
+![AI resume suggestions listing four specific improvements, including honest handling of missing skills](screenshots/suggestions.png)
+
+**Role-specific interview questions with assessment notes**
+
+![Six generated interview questions covering technical, behavioural, situational, and learning-oriented topics](screenshots/interview-questions.png) 
+
 ### Planned improvements
 
 - STAR-style answer guidance for interview questions
