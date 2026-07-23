@@ -67,6 +67,21 @@ Exact skill matching is transparent and actionable ("you're missing Docker") but
 
 **4. AI suggestions and interview questions** — this is where an LLM genuinely earns its place. Generating fluent, contextual advice is exactly what language models are good at, and the stakes are lower: the user reviews suggestions rather than trusting them blindly. Prompts include explicit anti-hallucination constraints instructing the model to use only information present in the resume, and to recommend *gaining* a missing skill rather than fabricating experience.
 
+## Architecture
+
+```mermaid
+flowchart TD
+    A[User uploads resume<br/>PDF or DOCX] --> B[Input Processing<br/>PyMuPDF / python-docx]
+    A2[User pastes<br/>job description] --> C
+    B -->|clean text| C[Skill Extraction<br/>keyword matching]
+    C -->|matched + missing skills| D[Matching & Scoring<br/>weighted formula]
+    B -->|clean text| E[Semantic Similarity<br/>sentence-transformers]
+    E -->|similarity score| D
+    D -->|score + gaps| F[Results Display<br/>Streamlit UI]
+    C -->|missing skills| G[LLM Layer<br/>Google Gemini]
+    G -->|suggestions + questions| F
+```
+
 ## Running locally
 
 ```bash
