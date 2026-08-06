@@ -16,4 +16,6 @@ jobs:
       - run: pip install -r requirements.txt
       - run: pytest tests/ -q
         env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          # Tests mock every Gemini API call directly, so this only needs to
+          # be non-empty for genai.Client(...) to construct without erroring.
+          GEMINI_API_KEY: ci-placeholder-key
